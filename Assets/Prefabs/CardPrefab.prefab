@@ -271,6 +271,7 @@ GameObject:
   - component: {fileID: 8946670823670984103}
   - component: {fileID: 334442302084943523}
   - component: {fileID: 5628867195645227797}
+  - component: {fileID: 8533286319608983938}
   m_Layer: 5
   m_Name: CardBackground
   m_TagString: Untagged
@@ -335,6 +336,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8533286319608983938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3480007970670593506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0.12335344, g: 0.3735848, b: 0.24243942, a: 0.3019608}
+  m_EffectDistance: {x: -2, y: 2}
+  m_UseGraphicAlpha: 0
 --- !u!1 &8264007046881159372
 GameObject:
   m_ObjectHideFlags: 0
