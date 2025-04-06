@@ -12,10 +12,6 @@ public class DeckManager : MonoBehaviour {
     }
 
     void InitializeDeck() {
-        if (cardPrefab == null) {
-            Debug.LogError("Card Prefab not assigned in DeckManager!");
-            return;
-        }
         for (int i = 1; i <= 10; i++) {
             for (int j = 0; j < 3; j++) {
                 CreateCard(Card.CardType.Number, i.ToString(), i);
@@ -33,15 +29,7 @@ public class DeckManager : MonoBehaviour {
     void CreateCard(Card.CardType type, string value, int numberValue) {
         GameObject cardGO = Instantiate(cardPrefab, deckParent);
         Card card = cardGO.GetComponentInChildren<Card>(true); 
-        if (card == null) {
-            Debug.LogError("Card component missing on prefab!");
-            Destroy(cardGO);
-            return;
-        }
-        card.type = type;
-        card.numberValue = numberValue;
-        card.operatorValue = value;
-        card.UpdateCardDisplay();
+        card.Initialize(type, value, numberValue);
         deck.Add(card);
     }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEditor.Rendering.Universal;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Splines;
 
 public class HandManager : MonoBehaviour
@@ -13,6 +14,8 @@ public class HandManager : MonoBehaviour
     [SerializeField] private SplineContainer splineContainer;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private DeckManager deckManager;
+    [SerializeField] private PlayAreaManager playAreaManager;
+    [SerializeField] private Transform handParent;
     private List<GameObject> handCards = new();
 
     private void Update(){
@@ -30,19 +33,48 @@ public class HandManager : MonoBehaviour
         }
     }
 
-    private void DrawCard(){
+    private void DrawCard()
+    {
         if (handCards.Count >= maxHandSize) return;
         
         Card drawnCard = deckManager.DrawCard();
         if (drawnCard == null) return;
         
-        GameObject cardGO = drawnCard.gameObject;
-        cardGO.transform.position = spawnPoint.position;
-        cardGO.transform.rotation = spawnPoint.rotation;
-        cardGO.SetActive(true);
+        GameObject rootCardGO = drawnCard.rootCardObject;
+        rootCardGO.transform.SetParent(handParent);
+        rootCardGO.transform.position = spawnPoint.position;
+        rootCardGO.transform.rotation = spawnPoint.rotation;
+        rootCardGO.SetActive(true);
         
-        handCards.Add(cardGO);
+        handCards.Add(rootCardGO);
+        
+        Button cardButton = drawnCard.GetComponent<Button>();
+        cardButton.onClick.AddListener(() => OnCardClicked(rootCardGO));
+        
         UpdateCardPositions();
+    }
+
+    public void OnCardClicked(GameObject rootCardGO) {
+        if (handCards.Contains(rootCardGO)) {
+            Card card = rootCardGO.GetComponentInChildren<Card>();
+            card.GetComponent<Button>().onClick.RemoveAllListeners();
+            
+            bool isCardAdded = playAreaManager.AddCardToPlayArea(rootCardGO);
+            if (isCardAdded) {
+                handCards.Remove(rootCardGO);
+                UpdateCardPositions();
+            }
+        }
+    }
+
+    public void ReturnCardToHand(GameObject card)
+    {
+        if (!handCards.Contains(card))
+        {
+            card.transform.SetParent(handParent);
+            handCards.Add(card);
+            UpdateCardPositions();
+        }
     }
 
     private void UpdateCardPositions(){
@@ -52,7 +84,7 @@ public class HandManager : MonoBehaviour
         Spline spline = splineContainer.Spline;
         for (int i = 0; i < handCards.Count; i++){
             float p = firstCardPosition + i * cardSpacing;
-            Vector3 splinePosition = spline.EvaluatePosition(p);
+            Vector3 splinePosition = splineContainer.transform.TransformPoint(spline.EvaluatePosition(p));
             Vector3 forward = spline.EvaluateTangent(p);
             Vector3 up = spline.EvaluateUpVector(p);
             Vector3 finalPosition = splinePosition + new Vector3(0, 0, -i * 0.01f);

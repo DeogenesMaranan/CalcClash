@@ -5,14 +5,15 @@ using UnityEngine.EventSystems;
 public class Card : MonoBehaviour {
     [SerializeField] private Text cardValueTextSmall;
     [SerializeField] private Text cardValueTextBig;
+    [HideInInspector] public GameObject rootCardObject;
+    private GameObject _rootObject;
     public enum CardType { Number, Operator }
     public CardType type;
     public int numberValue;
     public string operatorValue;
 
-    // private bool isInPlayArea = false;
-
     public void Initialize(CardType newType, string value, int numValue) {
+        rootCardObject = transform.parent.gameObject;
         type = newType;
         numberValue = numValue;
         operatorValue = value;
@@ -25,28 +26,5 @@ public class Card : MonoBehaviour {
         cardValueTextBig.text = value;
     }
 
-
-    // public void OnPointerClick(PointerEventData eventData) {
-    //     if (isInPlayArea) {
-    //         ReturnToHand();
-    //     } else {
-    //         MoveToPlayArea();
-    //     }
-    // }
-
-    // void MoveToPlayArea() {
-    //     Transform playArea = DropZone.Instance.transform;
-    //     transform.SetParent(playArea);
-    //     transform.localPosition = Vector3.zero;
-    //     isInPlayArea = true;
-    //     DropZone.Instance.AddCard(this);
-    // }
-
-    // public void ReturnToHand() {
-    //     Transform hand = HandManager.Instance.handParent;
-    //     transform.SetParent(hand);
-    //     transform.localPosition = Vector3.zero;
-    //     isInPlayArea = false;
-    //     DropZone.Instance.RemoveCard(this);
-    // }
+    public GameObject RootObject => _rootObject;
 }

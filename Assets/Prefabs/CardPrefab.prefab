@@ -242,7 +242,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &2818254941037892230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -489,6 +489,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardValueTextSmall: {fileID: 7024301151582760755}
   cardValueTextBig: {fileID: 6116033116263684631}
+  rootCardObject: {fileID: 0}
   type: 0
   numberValue: 0
   operatorValue: 
