@@ -17,7 +17,13 @@ public class LockInButton : MonoBehaviour
     void CalculateOperation()
     {
         var playedCards = playAreaManager.GetPlayedCards();
-        
+
+        if (playedCards.Count == 0)
+        {
+            GameManager.Instance.ProcessResult(0f, "0");
+            return;
+        }
+
         if (playedCards.Count == 1)
         {
             Card singleCard = playedCards[0].GetComponentInChildren<Card>();
@@ -39,6 +45,7 @@ public class LockInButton : MonoBehaviour
             playAreaManager.ClearPlayArea();
         }
     }
+
 
     string BuildExpression(List<GameObject> cards)
     {
