@@ -8,7 +8,6 @@ using System.Collections.Generic;
 public class LockInButton : MonoBehaviour
 {
     [SerializeField] private PlayAreaManager playAreaManager;
-    [SerializeField] private Text resultText;
     [SerializeField] private Button button;
     
     private DataTable table = new DataTable();
@@ -22,7 +21,8 @@ public class LockInButton : MonoBehaviour
         if (playedCards.Count == 1)
         {
             Card singleCard = playedCards[0].GetComponentInChildren<Card>();
-            ShowResult(singleCard.numberValue.ToString("F2"));
+            GameManager.Instance.ProcessResult(singleCard.numberValue, singleCard.numberValue.ToString());
+            playAreaManager.ClearPlayArea();
             return;
         }
 
@@ -30,11 +30,13 @@ public class LockInButton : MonoBehaviour
         {
             string expression = BuildExpression(playedCards);
             double result = Convert.ToDouble(table.Compute(expression, ""));
-            ShowResult(result.ToString("F2"));
+            GameManager.Instance.ProcessResult((float)result, expression);
+            playAreaManager.ClearPlayArea();
         }
         catch (DivideByZeroException)
         {
-            ShowResult("0");
+            GameManager.Instance.ProcessResult(0f, "Division by Zero");
+            playAreaManager.ClearPlayArea();
         }
     }
 
@@ -49,12 +51,5 @@ public class LockInButton : MonoBehaviour
                      card.operatorValue);
         }
         return sb.ToString();
-    }
-
-    void ShowResult(string message)
-    {
-        resultText.color = Color.green;
-        resultText.text = $"Result: {message}";
-        playAreaManager.ClearPlayArea();
     }
 }

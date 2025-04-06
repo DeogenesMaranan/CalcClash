@@ -58,7 +58,6 @@ public class PlayAreaManager : MonoBehaviour
         {
             if(card != null)
             {
-                DestroyImmediate(card.transform.parent.gameObject);
                 DestroyImmediate(card);
             }
         }

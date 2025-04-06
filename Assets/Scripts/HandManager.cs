@@ -7,7 +7,7 @@ using UnityEngine.Splines;
 
 public class HandManager : MonoBehaviour
 {
-    [SerializeField] private int maxHandSize;
+    [SerializeField] public int maxHandSize;
     [SerializeField] private int initialHandSize;
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private SplineContainer splineContainer;
@@ -16,6 +16,8 @@ public class HandManager : MonoBehaviour
     [SerializeField] private PlayAreaManager playAreaManager;
     [SerializeField] private Transform handParent;
     private List<GameObject> handCards = new();
+    public List<GameObject> HandCards => handCards;
+    public bool IsHandEmpty() => handCards.Count == 0;
 
     void Start() {
         StartCoroutine(DrawInitialHandWithDelay());
@@ -28,7 +30,7 @@ public class HandManager : MonoBehaviour
         }
     }
 
-    private void DrawCard()
+    public void DrawCard()
     {
         if (handCards.Count >= maxHandSize) return;
         

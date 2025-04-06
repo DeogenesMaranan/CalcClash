@@ -6,6 +6,8 @@ public class DeckManager : MonoBehaviour {
     public Transform deckParent;
     private List<Card> deck = new List<Card>();
 
+    public bool IsDeckEmpty() => deck.Count == 0;
+
     void Start() {
         InitializeDeck();
         ShuffleDeck();
@@ -20,7 +22,7 @@ public class DeckManager : MonoBehaviour {
 
         string[] operators = { "+", "-", "*", "/" };
         foreach (string op in operators) {
-            for (int j = 0; j < 3; j++) {
+            for (int j = 0; j < 4; j++) {
                 CreateCard(Card.CardType.Operator, op, 0);
             }
         }
