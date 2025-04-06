@@ -13,7 +13,6 @@ public class PlayAreaManager : MonoBehaviour
     [SerializeField] private Transform handParent;
     public Transform playAreaParent;
     private List<GameObject> playedCards = new List<GameObject>();
-    private Vector3 originalCardScale = Vector3.one;
     private Dictionary<GameObject, Vector3> originalScales = new Dictionary<GameObject, Vector3>();
      
     public bool AddCardToPlayArea(GameObject card) {
@@ -48,6 +47,22 @@ public class PlayAreaManager : MonoBehaviour
     public void ReturnAllCardsToHand()
     {
         StartCoroutine(ReturnCardsRoutine());
+    }
+    public List<GameObject> GetPlayedCards()
+    {
+        return new List<GameObject>(playedCards);
+    }
+    public void ClearPlayArea()
+    {
+        foreach(GameObject card in playedCards)
+        {
+            if(card != null)
+            {
+                DestroyImmediate(card.transform.parent.gameObject);
+                DestroyImmediate(card);
+            }
+        }
+        playedCards.Clear();
     }
     private IEnumerator ReturnCardsRoutine()
         {
