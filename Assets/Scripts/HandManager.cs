@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
-using UnityEditor.Rendering.Universal;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Splines;
@@ -17,10 +16,6 @@ public class HandManager : MonoBehaviour
     [SerializeField] private PlayAreaManager playAreaManager;
     [SerializeField] private Transform handParent;
     private List<GameObject> handCards = new();
-
-    private void Update(){
-        if (Input.GetKeyDown(KeyCode.Space)) DrawCard();
-    }
 
     void Start() {
         StartCoroutine(DrawInitialHandWithDelay());
@@ -55,26 +50,18 @@ public class HandManager : MonoBehaviour
     }
 
     public void OnCardClicked(GameObject rootCardGO) {
-        if (handCards.Contains(rootCardGO)) {
-            Card card = rootCardGO.GetComponentInChildren<Card>();
-            card.GetComponent<Button>().onClick.RemoveAllListeners();
-            
-            bool isCardAdded = playAreaManager.AddCardToPlayArea(rootCardGO);
-            if (isCardAdded) {
-                handCards.Remove(rootCardGO);
-                UpdateCardPositions();
-            }
+        bool isCardAdded = playAreaManager.AddCardToPlayArea(rootCardGO);
+        if (isCardAdded) {
+            handCards.Remove(rootCardGO);
+            UpdateCardPositions();
         }
     }
 
     public void ReturnCardToHand(GameObject card)
     {
-        if (!handCards.Contains(card))
-        {
-            card.transform.SetParent(handParent);
-            handCards.Add(card);
-            UpdateCardPositions();
-        }
+        card.transform.SetParent(handParent);
+        handCards.Add(card);
+        UpdateCardPositions();
     }
 
     private void UpdateCardPositions(){

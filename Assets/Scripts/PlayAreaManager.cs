@@ -20,15 +20,25 @@ public class PlayAreaManager : MonoBehaviour
         if(playedCards.Count >= maxPlayAreaSize) return false;
         
         Card cardComponent = card.GetComponentInChildren<Card>();
-        Button button = cardComponent.GetComponent<Button>();
+        if(cardComponent == null) return false;
 
+        if(playedCards.Count % 2 == 0 && cardComponent.type != Card.CardType.Number) {
+            return false;
+        }
+
+        if(playedCards.Count % 2 == 1 && cardComponent.type != Card.CardType.Operator) {
+            return false;
+        }
+
+        Button button = cardComponent.GetComponent<Button>();
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(() => ReturnAllCardsToHand());
         button.enabled = true;
         
         Vector3 currentScale = card.transform.localScale;
         originalScales[card] = currentScale;
-        card.transform.DOScale(currentScale * 0.8f, 0.25f);
+        card.transform.DOScale(currentScale * 0.65f, 0.25f);
+        card.transform.SetParent(playAreaParent);
         
         playedCards.Add(card);
         UpdatePlayAreaPositions();
