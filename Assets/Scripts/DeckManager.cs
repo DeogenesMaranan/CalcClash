@@ -50,4 +50,10 @@ public class DeckManager : MonoBehaviour {
         deck.RemoveAt(0);
         return drawnCard;
     }
+
+    public void AppendNewDeck()
+    {
+        InitializeDeck();
+        ShuffleDeck();
+    }
 }

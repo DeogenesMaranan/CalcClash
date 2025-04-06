@@ -11,6 +11,7 @@ public class PlayAreaManager : MonoBehaviour
     [SerializeField] private SplineContainer splineContainer;
     [SerializeField] private HandManager handManager;
     [SerializeField] private Transform handParent;
+    [SerializeField] private Text importantText;
     public Transform playAreaParent;
     private List<GameObject> playedCards = new List<GameObject>();
     private Dictionary<GameObject, Vector3> originalScales = new Dictionary<GameObject, Vector3>();
@@ -22,10 +23,12 @@ public class PlayAreaManager : MonoBehaviour
         if(cardComponent == null) return false;
 
         if(playedCards.Count % 2 == 0 && cardComponent.type != Card.CardType.Number) {
+            GameManager.Instance.ShowFlashMessage("NEED A NUMBER HERE!", "#FFA651");
             return false;
         }
 
         if(playedCards.Count % 2 == 1 && cardComponent.type != Card.CardType.Operator) {
+            GameManager.Instance.ShowFlashMessage("NEED A OPERATOR HERE!", "#FFA651");
             return false;
         }
 
